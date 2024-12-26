@@ -13,6 +13,7 @@ import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
@@ -28,6 +29,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import my.ui.components.AchievementBadgeDemo
+import my.ui.components.AnimatedSlidersIcon
 import my.ui.components.BearButton
 import my.ui.components.BroadcastLiveStreamBadge
 import my.ui.components.GamingLiveStreamBadge
@@ -66,6 +68,7 @@ fun Components() {
     var showStoryProgress by remember { mutableStateOf(false) }
     var showShareCards by remember { mutableStateOf(false) }
     var showAchievementBadge by remember { mutableStateOf(false) }
+    var showAnimatedSliders by remember { mutableStateOf(false) }
 
     LazyColumn(verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -166,6 +169,15 @@ fun Components() {
                 onClick = {showAchievementBadge = !showAchievementBadge},
                 showComponent = showAchievementBadge,
                 component = { AchievementBadgeDemo() }
+            )
+        }
+
+        item{
+            UIComponent(
+                text = "Animated Sliders",
+                onClick = { showAnimatedSliders = !showAnimatedSliders },
+                showComponent = showAnimatedSliders,
+                component = { AnimatedSlidersIcon(Modifier.size(70.dp)) }
             )
         }
     }
