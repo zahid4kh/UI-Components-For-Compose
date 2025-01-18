@@ -42,6 +42,7 @@ import my.ui.components.ShareCardDemo
 import my.ui.components.ShareCardHandler
 import my.ui.components.StoryBubble
 import my.ui.components.StoryProgressDemo
+import my.ui.components.dialog.DialogExample
 import my.ui.ui.theme.MyUITheme
 
 class MainActivity : ComponentActivity() {
@@ -69,6 +70,7 @@ fun Components() {
     var showShareCards by remember { mutableStateOf(false) }
     var showAchievementBadge by remember { mutableStateOf(false) }
     var showAnimatedSliders by remember { mutableStateOf(false) }
+    var showCustomDialog by remember { mutableStateOf(false) }
 
     LazyColumn(verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -178,6 +180,15 @@ fun Components() {
                 onClick = { showAnimatedSliders = !showAnimatedSliders },
                 showComponent = showAnimatedSliders,
                 component = { AnimatedSlidersIcon(Modifier.size(70.dp)) }
+            )
+        }
+
+        item{
+            UIComponent(
+                text = "Custom Dialog",
+                onClick = {showCustomDialog = !showCustomDialog},
+                showComponent = showCustomDialog,
+                component = { DialogExample() }
             )
         }
     }
