@@ -1,9 +1,11 @@
 package my.ui
 
+import android.os.Build
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.annotation.RequiresApi
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -27,8 +29,10 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import my.ui.components.AchievementBadgeDemo
+import my.ui.components.AnalogClock
 import my.ui.components.AnimatedSlidersIcon
 import my.ui.components.BearButton
 import my.ui.components.BroadcastLiveStreamBadge
@@ -44,8 +48,10 @@ import my.ui.components.StoryBubble
 import my.ui.components.StoryProgressDemo
 import my.ui.components.dialog.DialogExample
 import my.ui.ui.theme.MyUITheme
+import java.time.Clock
 
 class MainActivity : ComponentActivity() {
+    @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -58,6 +64,7 @@ class MainActivity : ComponentActivity() {
 }
 
 
+@RequiresApi(Build.VERSION_CODES.O)
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
 fun Components() {
@@ -71,6 +78,7 @@ fun Components() {
     var showAchievementBadge by remember { mutableStateOf(false) }
     var showAnimatedSliders by remember { mutableStateOf(false) }
     var showCustomDialog by remember { mutableStateOf(false) }
+    var showAnalogClock by remember { mutableStateOf(false) }
 
     LazyColumn(verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -189,6 +197,19 @@ fun Components() {
                 onClick = {showCustomDialog = !showCustomDialog},
                 showComponent = showCustomDialog,
                 component = { DialogExample() }
+            )
+        }
+
+        item{
+            UIComponent(
+                text = "Analog Clock",
+                onClick = {showAnalogClock = !showAnalogClock},
+                showComponent = showAnalogClock,
+                component = { AnalogClock(
+                    modifier = Modifier.size(300.dp),
+                    circleColor = MaterialTheme.colorScheme.primary,
+                    secondsHandColor = Color.Red.copy(alpha = 0.7f),
+                ) }
             )
         }
     }
