@@ -8,6 +8,7 @@ import androidx.activity.enableEdgeToEdge
 import androidx.annotation.RequiresApi
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
@@ -20,6 +21,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedCard
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
@@ -193,15 +195,6 @@ fun Components() {
 
         item{
             UIComponent(
-                text = "Custom Dialog",
-                onClick = {showCustomDialog = !showCustomDialog},
-                showComponent = showCustomDialog,
-                component = { DialogExample() }
-            )
-        }
-
-        item{
-            UIComponent(
                 text = "Analog Clock",
                 onClick = {showAnalogClock = !showAnalogClock},
                 showComponent = showAnalogClock,
@@ -218,13 +211,19 @@ fun Components() {
 
 @Composable
 fun UIComponent(text: String, onClick: () -> Unit, showComponent: Boolean, component: @Composable () -> Unit) {
-    Column(horizontalAlignment = Alignment.CenterHorizontally){
-        TextButton(onClick = onClick){
-            Text(text = text)
-        }
-        AnimatedVisibility(visible = showComponent) {
-            component()
+    OutlinedCard(
+        modifier = Modifier
+            .clickable(onClick = onClick)
+    ){
+        Column(horizontalAlignment = Alignment.CenterHorizontally){
+            TextButton(onClick = onClick){
+                Text(text = text)
+            }
+            AnimatedVisibility(visible = showComponent) {
+                component()
+            }
         }
     }
+
 
 }
