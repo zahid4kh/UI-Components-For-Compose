@@ -3,9 +3,12 @@ package my.ui
 import android.os.Build
 import androidx.annotation.RequiresApi
 import androidx.compose.animation.AnimatedContent
+import androidx.compose.animation.animateContentSize
 import androidx.compose.animation.core.Spring
+import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.spring
+import androidx.compose.animation.core.tween
 import androidx.compose.animation.scaleIn
 import androidx.compose.animation.scaleOut
 import androidx.compose.animation.togetherWith
@@ -15,11 +18,14 @@ import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -27,6 +33,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.composed
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.scale
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.TransformOrigin
@@ -47,6 +54,23 @@ fun ComponentsGrid(
 ) {
     var selectedCardBounds by remember { mutableStateOf<CardBounds?>(null) }
     var screenSize by remember { mutableStateOf<Size?>(null) }
+
+    var containerSize by remember { mutableStateOf<Size?>(null) }
+
+    val cornerRadius by animateFloatAsState(
+        targetValue = if (selectedComponent != null) 0f else (containerSize?.let {
+            minOf(it.width, it.height) / 2
+        } ?: 1000f),
+        animationSpec = spring(
+            dampingRatio = Spring.DampingRatioLowBouncy,
+            stiffness = Spring.StiffnessVeryLow
+        ),
+        label = "cornerRadius"
+    )
+
+    LaunchedEffect(cornerRadius){
+        println("Corner radius: $cornerRadius")
+    }
 
     Box(
         modifier = Modifier
@@ -69,8 +93,8 @@ fun ComponentsGrid(
                 )
 
                 val (initialScale, targetScale) = when {
-                    targetState != null -> 0.3f to 1f
-                    else -> 1f to 0.3f
+                    targetState != null -> 0f to 1f
+                    else -> 1f to 0f
                 }
 
                 val transformOrigin = selectedCardBounds?.let { bounds ->
@@ -141,6 +165,8 @@ fun ComponentsGrid(
                 Box(
                     modifier = Modifier
                         .fillMaxSize()
+                        .clip(RoundedCornerShape(cornerRadius.coerceAtLeast(0f).dp))
+                        .background(MaterialTheme.colorScheme.surfaceContainerHigh)
                         .padding(padding),
                     contentAlignment = Alignment.Center
                 ) {
