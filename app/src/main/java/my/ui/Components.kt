@@ -8,9 +8,11 @@ import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.size
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
+import androidx.navigation.compose.rememberNavController
 import my.ui.components.AchievementBadgeDemo
 import my.ui.components.AnalogClock
 import my.ui.components.AnimatedSlidersIcon
@@ -26,7 +28,8 @@ import my.ui.components.ShareCardDemo
 import my.ui.components.ShareCardHandler
 import my.ui.components.StoryBubble
 import my.ui.components.StoryProgressDemo
-
+import my.ui.components.naveffect.PageA
+import my.ui.components.naveffect.TestNavHost
 
 @RequiresApi(Build.VERSION_CODES.O)
 @OptIn(ExperimentalLayoutApi::class)
@@ -65,4 +68,5 @@ val components = listOf(
             secondsHandColor = Color.Red.copy(alpha = 0.7f),
         )
     },
+    ComponentItem("Material Transition") { TestNavHost() }
 )
