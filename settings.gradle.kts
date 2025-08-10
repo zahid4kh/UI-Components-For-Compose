@@ -21,4 +21,3 @@ dependencyResolutionManagement {
 
 rootProject.name = "My UI"
 include(":app")
-include(":compkit")
