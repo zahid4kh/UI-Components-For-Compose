@@ -134,11 +134,11 @@ signing {
     val isJitPackBuild = System.getenv("JITPACK") == "true"
 
     if (!isJitPackBuild) {
-        val signingKeyFile = rootProject.file("private_key.gpg")
+        val signingKey = secretProps.getProperty("signing.key", "")
         val signingPassword = secretProps.getProperty("signing.password", "")
 
-        if (signingKeyFile.exists() && signingPassword.isNotEmpty()) {
-            useInMemoryPgpKeys(signingKeyFile.readText(), signingPassword)
+        if (signingKey.isNotEmpty() && signingPassword.isNotEmpty()) {
+            useInMemoryPgpKeys(signingKey, signingPassword)
             sign(publishing.publications["release"])
         } else {
             logger.warn("Signing not configured - missing signing.key or signing.password")
