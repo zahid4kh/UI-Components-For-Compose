@@ -118,6 +118,16 @@ publishing {
             }
         }
     }
+    repositories {
+        maven {
+            name = "CentralPortal"
+            url = uri("https://central.sonatype.com/api/v1/publisher/deployments/upload/")
+            credentials {
+                username = secretProps.getProperty("sonatype.username", "")
+                password = secretProps.getProperty("sonatype.password", "")
+            }
+        }
+    }
 }
 
 signing {
@@ -131,7 +141,7 @@ signing {
             useInMemoryPgpKeys(signingKeyFile.readText(), signingPassword)
             sign(publishing.publications["release"])
         } else {
-            logger.warn("Signing not configured - missing private_key.gpg or signing.password")
+            logger.warn("Signing not configured - missing signing.key or signing.password")
         }
     }
 }
