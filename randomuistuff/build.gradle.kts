@@ -4,7 +4,7 @@ plugins {
     alias(libs.plugins.android.library)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
-    id("com.vanniktech.maven.publish") version "0.34.0"
+    id("maven-publish")
 }
 
 val libraryVersion = project.findProperty("LIBRARY_VERSION") as String? ?: "1.0.0"
@@ -55,38 +55,15 @@ dependencies {
     debugImplementation(libs.androidx.ui.tooling)
 }
 
-mavenPublishing {
-    publishToMavenCentral()
-    signAllPublications()
-
-    coordinates("io.github.zahid4kh", "randomuistuff", libraryVersion)
-
-    pom {
-        name.set("Random UI Components")
-        description.set("A collection of custom UI components for Android Jetpack Compose applications.")
-        inceptionYear.set("2025")
-        url.set("https://github.com/zahid4kh/UI-Components-For-Compose")
-
-        licenses {
-            license {
-                name.set("The Apache License, Version 2.0")
-                url.set("http://www.apache.org/licenses/LICENSE-2.0.txt")
-                distribution.set("http://www.apache.org/licenses/LICENSE-2.0.txt")
+afterEvaluate {
+    publishing {
+        publications {
+            create<MavenPublication>("release") {
+                from(components["release"])
+                groupId = "com.github.zahid4kh"
+                artifactId = "randomuistuff"
+                version = libraryVersion
             }
-        }
-
-        developers {
-            developer {
-                id.set("zahid4kh")
-                name.set("Zahid Khalilov")
-                url.set("https://github.com/zahid4kh")
-            }
-        }
-
-        scm {
-            url.set("https://github.com/zahid4kh/UI-Components-For-Compose")
-            connection.set("scm:git:git://github.com/zahid4kh/UI-Components-For-Compose.git")
-            developerConnection.set("scm:git:ssh://git@github.com/zahid4kh/UI-Components-For-Compose.git")
         }
     }
 }
